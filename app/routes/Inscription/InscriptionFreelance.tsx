@@ -1042,7 +1042,7 @@ export default function InscriptionFreelance() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative w-full min-h-screen bg-[url('/background.png')] bg-cover bg-center flex flex-col items-center px-6 py-10"
+      className="relative w-full h-screen overflow-hidden bg-[url('/background.png')] bg-cover bg-center flex flex-col items-center px-6 py-10"
     >
       <div className="w-full flex justify-between items-center mb-12">
         <button
