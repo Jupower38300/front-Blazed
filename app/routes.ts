@@ -7,18 +7,21 @@ export default [
   route('login/phone', 'routes/Login/PhoneLogin.tsx'),
   route('inscription', 'routes/Inscription/Inscription.tsx'),
   route('inscription/freelance', 'routes/Inscription/InscriptionFreelance.tsx'),
+
+  // Updated enterprise routes
   route(
     'inscription/entreprise',
     'routes/Inscription/InscriptionEntreprise.tsx'
   ),
-
   route(
-    'inscription/mission',
+    'inscription/entreprise/mission/:industryId',
     'routes/Inscription/InscriptionEntrepriseMission.tsx'
   ),
-  route('cards/:userId', 'routes/Cards/cards.tsx'), // Ajout du paramètre userId
-  route('gestion/:userId', 'routes/Gestion/gestion.tsx'), // Paramètre optionnel
-  route('paiements/:userId', 'routes/Gestion/paiements.tsx'), // Paramètre optionnel
-  route('messagerie/:userId', 'routes/Messages/messages.tsx'), // Paramètre optionnel
-  route('profile/:userId', 'routes/Profile/profile.tsx'), // Paramètre optionnel
+
+  // Other routes
+  route('cards/:userId', 'routes/Cards/cards.tsx'),
+  route('gestion/:userId', 'routes/Gestion/gestion.tsx'),
+  route('paiements/:userId', 'routes/Gestion/paiements.tsx'),
+  route('messagerie/:userId', 'routes/Messages/messages.tsx'),
+  route('profile/:userId', 'routes/Profile/profile.tsx'),
 ] satisfies RouteConfig;

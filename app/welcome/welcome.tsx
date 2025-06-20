@@ -13,7 +13,7 @@ export function Welcome() {
   }, []);
 
   const handleVideoEnd = () => {
-    localStorage.setItem('hasSeenIntro', 'true');
+    localStorage.setItem('hasSeenIntro', 'false');
     setVideoEnded(true);
   };
 
@@ -24,6 +24,8 @@ export function Welcome() {
           src="/intro.mp4"
           autoPlay
           muted
+          playsInline
+          preload="auto"
           onEnded={handleVideoEnd}
           className="max-w-auto max-h-full object-contain"
         />

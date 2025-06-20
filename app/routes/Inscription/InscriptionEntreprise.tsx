@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 
 interface FormDataType {
+  accountType: string;
   phone: string;
   email: string;
   prefix: string;
@@ -32,6 +34,7 @@ const valeursOptions = [
 const InscriptionEntreprise: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [formData, setFormData] = useState<FormDataType>({
+    accountType: 'industry',
     phone: '',
     email: '',
     prefix: '+33',
@@ -53,6 +56,8 @@ const InscriptionEntreprise: React.FC = () => {
     valeurs: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { industryId: _industryId } = useParams<{ industryId: string }>();
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -183,8 +188,8 @@ const InscriptionEntreprise: React.FC = () => {
       }
 
       const data = await res.json();
-      alert('Inscription réussie, bienvenue ' + data.username);
-      window.location.href = `/?userId=${data.userId}`;
+      alert('Inscription réussie, bienvenue ' + formData.name);
+      window.location.href = `/inscription/entreprise/mission/?industryId=${data.userId}`;
     } catch (error) {
       alert('Erreur réseau, réessayez');
       console.error(error);

@@ -6,6 +6,7 @@ export default function InscriptionFreelance() {
 
   // Form data type definition
   type FormDataType = {
+    accountType: string;
     phone: string;
     email: string;
     prefix: string;
@@ -31,6 +32,7 @@ export default function InscriptionFreelance() {
 
   // Initial form state
   const [formData, setFormData] = useState<FormDataType>({
+    accountType: 'freelance',
     phone: '',
     email: '',
     prefix: '+33',
@@ -67,7 +69,7 @@ export default function InscriptionFreelance() {
     lastName: false,
     profileImageBase64: false,
     profileTitle: false,
-    dailyRate: false, // New error state// New error state
+    dailyRate: false,
     workType: false,
     workMethod: false,
     workLevel: false,
