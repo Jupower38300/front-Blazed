@@ -57,7 +57,7 @@ export default function InscriptionFreelance() {
   });
 
   const handleSignupSuccess = (userId: string) => {
-    window.location.href = `/?userId=${userId}`; // redirection avec paramètre dans l'URL
+    window.location.href = `/cards/?userId=${userId}`; // redirection avec paramètre dans l'URL
   };
 
   // Error states

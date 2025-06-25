@@ -175,7 +175,7 @@ const InscriptionEntreprise: React.FC = () => {
         return;
       }
 
-      const res = await fetch('http://localhost:3000/auth/register', {
+      const res = await fetch('http://localhost:3000/auth/registerindustry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -188,10 +188,8 @@ const InscriptionEntreprise: React.FC = () => {
       }
 
       const data = await res.json();
-      alert('Inscription réussie, bienvenue ' + formData.name);
-      window.location.href = `/inscription/entreprise/mission/?industryId=${data.userId}`;
+      window.location.href = `/inscription/entreprise/mission/?industryId=${data.user_id}`;
     } catch (error) {
-      alert('Erreur réseau, réessayez');
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -520,7 +518,7 @@ const InscriptionEntreprise: React.FC = () => {
           <button
             type="button"
             onClick={handleNext}
-            className="w-full bg-white text-black font-bold py-3 rounded-full hover:bg-gray-200 transition"
+            className="w-full bg-white text-black font-bold py-3 rounded-full hover:bg-gray-200 transition mb-[10px]"
           >
             Continuer
           </button>

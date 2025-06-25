@@ -14,12 +14,13 @@ export default [
     'routes/Inscription/InscriptionEntreprise.tsx'
   ),
   route(
-    'inscription/entreprise/mission/:industryId',
+    'inscription/entreprise/mission/',
     'routes/Inscription/InscriptionEntrepriseMission.tsx'
   ),
 
+  route('cards/:industryId', 'routes/Cards/cards_industry.tsx'),
   // Other routes
-  route('cards/:userId', 'routes/Cards/cards.tsx'),
+  route('cards/:userId', 'routes/Cards/cards_freelance.tsx'),
   route('gestion/:userId', 'routes/Gestion/gestion.tsx'),
   route('paiements/:userId', 'routes/Gestion/paiements.tsx'),
   route('messagerie/:userId', 'routes/Messages/messages.tsx'),

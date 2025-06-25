@@ -64,6 +64,7 @@ const InscriptionEntreprise: React.FC = () => {
     budget: false,
     workType: false,
     workMethod: false,
+    locations: false, // Ajouté
   });
 
   const validateStep = (): boolean => {
@@ -86,9 +87,12 @@ const InscriptionEntreprise: React.FC = () => {
         newErrors.budget = formData.budget <= 0;
         break;
       case 5:
-        newErrors.workType = !formData.workType;
+        newErrors.locations = formData.locations.length === 0; // Ajouté
         break;
       case 6:
+        newErrors.workType = !formData.workType;
+        break;
+      case 7:
         newErrors.workMethod = !formData.workMethod;
         break;
       default:
@@ -100,7 +104,8 @@ const InscriptionEntreprise: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (validateStep() && currentStep < 11) {
+    if (validateStep() && currentStep < 13) {
+      // Modifié de 11 à 12
       setCurrentStep((prev) => prev + 1);
     }
   };
@@ -110,26 +115,40 @@ const InscriptionEntreprise: React.FC = () => {
     else window.history.back();
   };
 
-  const handleSubmit = async () => {
-    if (!validateStep()) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3000/auth/register', {
+      // Récupérer l'UUID de l'industrie depuis l'URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const industryId = urlParams.get('industryId');
+
+      // Préparer les données avec conversion de date
+      const missionData = {
+        ...formData,
+        industryId,
+        time_posted: new Date().toISOString(),
+        status: 'En Cours',
+        deadline: formData.deadline.toISOString(),
+      };
+
+      const res = await fetch('http://localhost:3000/mission/create/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(missionData),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        alert('Inscription réussie, bienvenue ' + data.username);
-        window.location.href = `/?userId=${data.userId}`;
-      } else {
+      if (!res.ok) {
         const error = await res.json();
-        alert('Erreur inscription : ' + error.message);
+        alert('Erreur création de mission : ' + error.message);
+        return;
       }
+
+      const data = await res.json();
+      window.location.href = `/cards/?industryId=${industryId}`;
     } catch (error) {
-      alert('Erreur réseau, réessayez');
+      console.error('Erreur création mission:', error);
+      alert('Une erreur est survenue lors de la création de la mission');
     }
   };
 
@@ -311,7 +330,7 @@ const InscriptionEntreprise: React.FC = () => {
       case 5: // Localisations
         return renderSkillStep(
           'Localisations',
-          'Compétences techniques requises',
+          'Où se situe votre entreprise ?',
           [
             'Paris',
             'Nantes',
@@ -328,7 +347,11 @@ const InscriptionEntreprise: React.FC = () => {
             'Partout en France',
           ],
           formData.locations,
-          (skills) => setFormData((prev) => ({ ...prev, locations: skills }))
+          (skills) => {
+            setFormData((prev) => ({ ...prev, locations: skills }));
+            setErrors((prev) => ({ ...prev, locations: false }));
+          },
+          errors.locations // Ajouté
         );
 
       case 6: // Type de travail
@@ -507,6 +530,40 @@ const InscriptionEntreprise: React.FC = () => {
           (speak) => setFormData((prev) => ({ ...prev, speak }))
         );
 
+      case 13:
+        return (
+          <div
+            key="features"
+            className="flex-1 flex flex-col justify-start pb-16 w-full max-w-xs text-left"
+          >
+            <h2 className="text-4xl font-bold mb-4 text-[#22002A]">
+              Fonctionnalités
+            </h2>
+            <p className="text-[#22002A] mb-8">
+              L’offre parfaite pour tester la vibe BLAZED en douceur.
+            </p>
+
+            <div className="space-y-4 mb-8">
+              {[
+                'Quota de 5 missions par mois',
+                'accessibles sans engagement',
+                'Accès à la plateforme et aux missions classiques',
+                'Commission de 12% sur chaque mission réalisée',
+                'Gestion des missions et paiements via la plateforme',
+                'Support client standard pour toute assistance',
+                'Mise en avant standard du profil',
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-2 text-sm text-[#22002A]"
+                >
+                  <span className="mt-1 text-[#E8E0EC]">•</span>
+                  <span className={index === 1 ? 'ml-4' : ''}>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
       default:
         return null;
     }
@@ -517,7 +574,8 @@ const InscriptionEntreprise: React.FC = () => {
     description: string,
     options: string[],
     selected: string[],
-    onChange: (skills: string[]) => void
+    onChange: (skills: string[]) => void,
+    error?: boolean // Ajouté
   ) => (
     <div className="flex flex-col justify-start pb-16 w-full max-w-xs text-left">
       <h2 className="text-4xl font-bold mb-6 text-[#22002A]">{title}</h2>
@@ -543,6 +601,11 @@ const InscriptionEntreprise: React.FC = () => {
           </button>
         ))}
       </div>
+      {error && ( // Ajouté
+        <p className="text-red-500 text-sm mt-2">
+          Veuillez sélectionner au moins une option
+        </p>
+      )}
     </div>
   );
 
@@ -563,10 +626,10 @@ const InscriptionEntreprise: React.FC = () => {
       <div className="w-full max-w-xs mt-auto">
         <button
           type="button"
-          onClick={currentStep === 12 ? handleSubmit : handleNext}
+          onClick={currentStep === 13 ? handleSubmit : handleNext}
           className="w-full bg-white text-black font-bold py-3 rounded-full hover:bg-gray-200 transition"
         >
-          {currentStep === 12 ? "S'inscrire" : 'Continuer'}
+          {currentStep === 13 ? 'Valider' : 'Continuer'}
         </button>
       </div>
     </div>
