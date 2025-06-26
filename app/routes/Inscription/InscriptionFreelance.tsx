@@ -223,11 +223,14 @@ export default function InscriptionFreelance() {
     if (!validateStep()) return;
 
     try {
-      const res = await fetch('http://localhost:3000/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        'https://blazed-back.onrender.com/auth/register',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();
