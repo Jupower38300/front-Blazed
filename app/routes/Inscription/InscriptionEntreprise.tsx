@@ -175,11 +175,14 @@ const InscriptionEntreprise: React.FC = () => {
         return;
       }
 
-      const res = await fetch('http://localhost:3000/auth/registerindustry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        'https://blazed-back.onrender.com/auth/registerindustry',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();

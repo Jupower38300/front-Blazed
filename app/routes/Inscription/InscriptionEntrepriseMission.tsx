@@ -132,11 +132,14 @@ const InscriptionEntreprise: React.FC = () => {
         deadline: formData.deadline.toISOString(),
       };
 
-      const res = await fetch('http://localhost:3000/mission/create/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(missionData),
-      });
+      const res = await fetch(
+        'https://blazed-back.onrender.com/mission/create/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(missionData),
+        }
+      );
 
       if (!res.ok) {
         const error = await res.json();

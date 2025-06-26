@@ -60,14 +60,17 @@ export default function MailLogin() {
     // Dans handleSubmit (étape 1)
     if (currentStep === 1) {
       try {
-        const response = await fetch('http://localhost:3000/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
+        const response = await fetch(
+          'https://blazed-back.onrender.com/auth/login',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: formData.email,
+              password: formData.password,
+            }),
+          }
+        );
 
         const data = await response.json();
 
