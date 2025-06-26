@@ -239,9 +239,7 @@ export default function InscriptionFreelance() {
       }
 
       const data = await res.json();
-      alert('Inscription réussie, bienvenue ' + data.username);
-      handleSignupSuccess(data.userId);
-      // Redirection or reset logic here
+      handleSignupSuccess(data.user_id);
     } catch (error) {
       alert('Erreur réseau, réessayez');
       console.error(error);
